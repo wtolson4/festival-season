@@ -24,7 +24,11 @@
     big_easy_homecoming:'Book The Revivalists in New Orleans.'
   };
 
-  ACHIEVEMENTS.forEach(d=>{ if(requirements[d.id]) d.requirement=requirements[d.id]; });
+  ACHIEVEMENTS.forEach(d=>{
+    if(requirements[d.id]) d.requirement=requirements[d.id];
+    if(d.id==='mr_305') d.icon='👨‍🦲';
+    if(d.id==='boricua_blockbuster') d.icon='🐸';
+  });
 
   achievementCard=function(d,isUnlocked){
     if(d.hidden&&!isUnlocked)return '<div class="achievement-card secret locked"><div class="achievement-icon">❓</div><strong>???</strong><p>Secret achievement</p></div>';
@@ -36,6 +40,10 @@
     return items.map(d=>'<div class="achievement-unlock"><span>New badge unlocked</span><strong>'+d.icon+' '+d.title+'</strong><p>'+d.copy+'</p>'+(d.requirement?'<div class="achievement-req">Earned by: '+d.requirement+'</div>':'')+'</div>').join('');
   };
 
-  const buildNode=[...document.querySelectorAll('body *')].find(el=>el.childElementCount===0&&el.textContent.trim()==='build 0.16.2 · ready');
+  const refreshRecords=()=>{ try{ if(typeof renderRecords==='function') renderRecords(); }catch(e){ console.warn('Badge detail refresh skipped',e); } };
+  refreshRecords();
+  setTimeout(refreshRecords,0);
+
+  const buildNode=[...document.querySelectorAll('body *')].find(el=>el.childElementCount===0&&el.textContent.trim().startsWith('build 0.16.2'));
   if(buildNode)buildNode.textContent='build 0.16.2 · badge detail update';
 })();
